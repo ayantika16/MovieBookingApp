@@ -1,7 +1,10 @@
 package com.example.demo.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Movie {
@@ -12,6 +15,16 @@ public class Movie {
 	private String theatreName;
 	private int totalSeats;
 	private int seatsAvailable;
+	
+	@OneToMany(targetEntity=Ticket.class)
+	private List<Ticket> ticketList;
+	
+	public List<Ticket> getTicketList() {
+		return ticketList;
+	}
+	public void setTicketList(List<Ticket> ticketList) {
+		this.ticketList = ticketList;
+	}
 	public int getMovieId() {
 		return movieId;
 	}

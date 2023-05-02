@@ -18,7 +18,9 @@ import com.example.demo.exceptions.MovieAlreadyPresentException;
 import com.example.demo.exceptions.MovieIdNotPresentException;
 import com.example.demo.exceptions.NoMoviePresentException;
 import com.example.demo.model.Movie;
+import com.example.demo.model.Ticket;
 import com.example.demo.service.MovieService;
+import com.example.demo.service.TicketService;
 
 @RestController
 @RequestMapping("api/v1.0/moviebooking")
@@ -26,6 +28,9 @@ public class MovieController {
 
 	@Autowired
 	private MovieService movieService;
+	
+	@Autowired
+	private TicketService ticketService;
 	
 	@PostMapping("/addMovie")
 	public ResponseEntity<?> addMovie(@RequestBody Movie movie) throws MovieAlreadyPresentException{
@@ -38,11 +43,16 @@ public class MovieController {
 	}
 	
 	@GetMapping("/getAllMovies")
-	public ResponseEntity<?> getAllMovies() throws NoMoviePresentException{
+	public ResponseEntity<?> getAllMovies() throws NoMoviePresentException, MovieIdNotPresentException{
 		
 		List<Movie> movieList=movieService.getAllMovies();
 		
 		if(movieList!=null) {
+			
+			for(Movie m: movieList) {
+				List<Ticket> ticketList=ticketService.getAllTickets(m.getMovieId());
+				m.setTicketList(ticketList);
+			}
 			return new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
 		}
 		
@@ -53,8 +63,8 @@ public class MovieController {
 	@DeleteMapping("/deleteMovie/{mid}")
 	public ResponseEntity<?> deleteMovie(@PathVariable int mid) throws MovieIdNotPresentException{
 		
-		if(movieService.deleteMovie(mid)) {
-			return new ResponseEntity<String>(mid+" Movie Deleted", HttpStatus.OK);
+		if(ticketService.deleteTicket(mid) & movieService.deleteMovie(mid)) {
+			return new ResponseEntity<String>(mid+" Movie & Tickets Deleted", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(mid+" Movie is not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
@@ -72,6 +82,8 @@ public class MovieController {
 	public ResponseEntity<?> searchByMovieId(@PathVariable int mid) throws MovieIdNotPresentException{
 		
 		if(movieService.searchMovieById(mid)!= null) {
+			List<Ticket> ticketList=ticketService.getAllTickets(mid);
+			movieService.searchMovieById(mid).setTicketList(ticketList);
 			return new ResponseEntity<Movie>(movieService.searchMovieById(mid), HttpStatus.OK);
 		}
 		
