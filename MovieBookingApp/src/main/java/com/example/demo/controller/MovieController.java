@@ -24,7 +24,7 @@ import com.example.demo.service.MovieService;
 import com.example.demo.service.TicketService;
 
 @RestController
-@RequestMapping("api/v1.0/moviebooking")
+@RequestMapping("api/v1/moviebooking")
 public class MovieController {
 
 	@Autowired
