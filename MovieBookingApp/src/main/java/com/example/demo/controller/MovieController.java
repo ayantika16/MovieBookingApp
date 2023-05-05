@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class MovieController {
 	private TicketService ticketService;
 	
 	@PostMapping("/addMovie")
+	@PreAuthorize("hasRole('Admin')")
 	public ResponseEntity<?> addMovie(@RequestBody Movie movie) throws MovieAlreadyPresentException{
 		
 		if(movieService.addMovie(movie)!= null) {
@@ -43,6 +45,7 @@ public class MovieController {
 	}
 	
 	@GetMapping("/getAllMovies")
+	@PreAuthorize("hasRole('User')")
 	public ResponseEntity<?> getAllMovies() throws NoMoviePresentException, MovieIdNotPresentException{
 		
 		List<Movie> movieList=movieService.getAllMovies();
@@ -61,15 +64,17 @@ public class MovieController {
 	}
 	
 	@DeleteMapping("/deleteMovie/{mid}")
+	@PreAuthorize("hasRole('Admin')")
 	public ResponseEntity<?> deleteMovie(@PathVariable int mid) throws MovieIdNotPresentException{
 		
-		if(ticketService.deleteTicket(mid) & movieService.deleteMovie(mid)) {
+		if( movieService.deleteMovie(mid)) {
 			return new ResponseEntity<String>(mid+" Movie & Tickets Deleted", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(mid+" Movie is not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PutMapping("/updateMovie")
+	@PreAuthorize("hasRole('Admin')")
 	public ResponseEntity<?> updateMovie(@RequestBody Movie movie) throws MovieIdNotPresentException{
 		
 		if(movieService.updateMovie(movie)) {
@@ -79,6 +84,7 @@ public class MovieController {
 	}
 	
 	@GetMapping("/searchByMovieId/{mid}")
+	@PreAuthorize("hasRole('User')")
 	public ResponseEntity<?> searchByMovieId(@PathVariable int mid) throws MovieIdNotPresentException{
 		
 		if(movieService.searchMovieById(mid)!= null) {

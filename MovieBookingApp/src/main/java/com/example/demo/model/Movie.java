@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -16,7 +17,7 @@ public class Movie {
 	private int totalSeats;
 	private int seatsAvailable;
 	
-	@OneToMany(targetEntity=Ticket.class)
+	@OneToMany(targetEntity=Ticket.class, cascade = CascadeType.REMOVE)
 	private List<Ticket> ticketList;
 	
 	public List<Ticket> getTicketList() {

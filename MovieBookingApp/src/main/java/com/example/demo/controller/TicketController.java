@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ import com.example.demo.service.MovieService;
 import com.example.demo.service.TicketService;
 
 @RestController
-@RequestMapping("/api/v1.0/bookTicket")
+@RequestMapping("/api/v1.0/Ticket")
 public class TicketController {
 	
 	@Autowired
@@ -26,6 +27,7 @@ public class TicketController {
 	private MovieService movieService;
 	
 	@PostMapping("/bookTicket/{mid}")
+	@PreAuthorize("hasRole('User')")
 	public ResponseEntity<?> bookTicket(@PathVariable("mid") int movieId, @RequestBody Ticket ticket) throws MovieIdNotPresentException{
 		
 		Movie mov=movieService.searchMovieById(movieId);
