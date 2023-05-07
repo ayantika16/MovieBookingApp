@@ -17,17 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.model.JwtRequest;
+import com.example.demo.model.UserDTO;
+
 
 @RestController
 @RequestMapping("call/consumer")
 public class ConsumerController 
 {
 	@PostMapping(value="/login")
-	public ResponseEntity<?> consumeLogin(@RequestBody JwtRequest userdto) throws RestClientException,Exception
-	{//String baseUrl ="http://localhost:8084/auth/v1/login";
-		
-		String baseUrl ="http://localhost:9090/login";
+	public ResponseEntity<?> consumeLogin(@RequestBody UserDTO userdto) throws RestClientException,Exception
+	{String baseUrl ="http://localhost:8084/auth/v1/login";
 	
 	RestTemplate restTemplate = new RestTemplate();
 	
@@ -38,6 +37,7 @@ result=restTemplate.exchange(baseUrl, HttpMethod.POST, getHeaders(userdto), new 
 	}
 	catch(Exception e)
 	{
+		e.printStackTrace();
 		return new ResponseEntity<String>("Login was not successful", HttpStatus.UNAUTHORIZED);
 		
 	}
@@ -45,16 +45,17 @@ result=restTemplate.exchange(baseUrl, HttpMethod.POST, getHeaders(userdto), new 
 		
 	}
 	
-	private static HttpEntity<JwtRequest> getHeaders(JwtRequest userdto)
+	private static HttpEntity<UserDTO> getHeaders(UserDTO userdto)
 	{
 		HttpHeaders header = new HttpHeaders();
 		
 		header.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 		header.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-		return new HttpEntity<JwtRequest>(userdto, header);
+		return new HttpEntity<UserDTO>(userdto, header);
 	}
 
 }
+
 
 
 

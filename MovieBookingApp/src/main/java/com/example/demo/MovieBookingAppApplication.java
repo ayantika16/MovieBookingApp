@@ -13,6 +13,13 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
+//import com.example.demo.filter.JWTFilter;
+
+//import io.swagger.v3.oas.models.Components;
+//import io.swagger.v3.oas.models.OpenAPI;
+//import io.swagger.v3.oas.models.security.SecurityRequirement;
+//import io.swagger.v3.oas.models.security.SecurityScheme;
+
 
 
 
@@ -41,6 +48,7 @@ public class MovieBookingAppApplication {
 							.bearerFormat("JWT")));
 		}
 	}
+
 	
 
 	public static void main(String[] args) {

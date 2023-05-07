@@ -23,6 +23,7 @@ import com.example.demo.model.Ticket;
 import com.example.demo.service.MovieService;
 import com.example.demo.service.TicketService;
 
+
 @RestController
 @RequestMapping("api/v1/moviebooking")
 public class MovieController {
@@ -45,7 +46,7 @@ public class MovieController {
 	}
 	
 	@GetMapping("/getAllMovies")
-	@PreAuthorize("hasRole('User')")
+	@PreAuthorize("hasRole(2)")
 	public ResponseEntity<?> getAllMovies() throws NoMoviePresentException, MovieIdNotPresentException{
 		
 		List<Movie> movieList=movieService.getAllMovies();
