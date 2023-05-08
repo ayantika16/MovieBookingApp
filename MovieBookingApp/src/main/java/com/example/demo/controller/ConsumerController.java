@@ -17,18 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+
 import com.example.demo.model.UserDTO;
 
 
 @RestController
-@RequestMapping("call/consumer")
 public class ConsumerController 
 {
-	@PostMapping(value="/login")
 	public ResponseEntity<?> consumeLogin(@RequestBody UserDTO userdto) throws RestClientException,Exception
-	{String baseUrl ="http://localhost:8084/auth/v1/login";
+	{
+	String baseUrl ="http://localhost:8084/auth/v1/login";
+		
+//		String baseUrl ="http://localhost:9090/login";
 	
 	RestTemplate restTemplate = new RestTemplate();
+	
+	
 	
 	ResponseEntity<Map<String,String>> result =null;
 	try
