@@ -36,6 +36,7 @@ public class TicketController {
 			int avl=mov.getSeatsAvailable();
 			mov.setSeatsAvailable(avl-ticket.getBookedSeats());
 			ticket.setMovie_id_fk(movieId);
+			ticket.setBookingName(ticket.getBookingName());
 			ticket.setBookedSeats(ticket.getBookedSeats());
 			ticket.setSeatsAvailable(avl-ticket.getBookedSeats());
 		

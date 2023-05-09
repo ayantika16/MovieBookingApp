@@ -13,6 +13,14 @@ public class Ticket {
 	
 	private int movie_id_fk;
 	
+	private String bookingName;
+	
+	public String getBookingName() {
+		return bookingName;
+	}
+	public void setBookingName(String bookingName) {
+		this.bookingName = bookingName;
+	}
 	private int bookedSeats;
 	private int seatsAvailable;
 	public int getTransactionId() {

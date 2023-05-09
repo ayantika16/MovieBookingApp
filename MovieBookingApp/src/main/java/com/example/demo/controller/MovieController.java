@@ -20,6 +20,7 @@ import com.example.demo.exceptions.MovieIdNotPresentException;
 import com.example.demo.exceptions.NoMoviePresentException;
 import com.example.demo.model.Movie;
 import com.example.demo.model.Ticket;
+import com.example.demo.service.DataPublisherServiceImpl;
 import com.example.demo.service.MovieService;
 import com.example.demo.service.TicketService;
 
@@ -34,13 +35,20 @@ public class MovieController {
 	@Autowired
 	private TicketService ticketService;
 	
+	@Autowired
+	DataPublisherServiceImpl dp;
+	
 	@PostMapping("/addMovie")
 	//@PreAuthorize("hasRole('Admin')")
 	public ResponseEntity<?> addMovie(@RequestBody Movie movie) throws MovieAlreadyPresentException{
 		
 		if(movieService.addMovie(movie)!= null) {
+			
+			dp.setTemp(movie.getMovieName()+" Added");
 			return new ResponseEntity<Movie>(movie, HttpStatus.CREATED);
+			
 		}
+		
 		
 		return new ResponseEntity<String>("Movie is null", HttpStatus.NO_CONTENT);
 	}
