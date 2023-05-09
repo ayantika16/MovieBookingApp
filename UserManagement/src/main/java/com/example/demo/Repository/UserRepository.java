@@ -1,5 +1,7 @@
 package com.example.demo.Repository;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +18,9 @@ public interface UserRepository extends JpaRepository<User, Integer>
 	
 	@Query(value="select u from User u where u.username= :username and u.password= :password")
 	public User validateUser(@Param("username") String username, @Param("password") String password);//login
+	
+	
+	@Query(value="select * from User where username= :name",nativeQuery = true)
+	Optional<User> findByUserName(@Param("name") String name);
 
 }
