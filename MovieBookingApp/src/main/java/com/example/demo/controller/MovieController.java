@@ -44,11 +44,12 @@ public class MovieController {
 		
 		if(movieService.addMovie(movie)!= null) {
 			
-			dp.setTemp(movie.getMovieName()+" Added");
+			dp.setTemp(movie.getMovieName()+" Added Successfully");
 			return new ResponseEntity<Movie>(movie, HttpStatus.CREATED);
 			
 		}
 		
+		dp.setTemp(movie.getMovieName()+"not added");
 		
 		return new ResponseEntity<String>("Movie is null", HttpStatus.NO_CONTENT);
 	}
@@ -65,6 +66,7 @@ public class MovieController {
 				List<Ticket> ticketList=ticketService.getAllTickets(m.getMovieId());
 				m.setTicketList(ticketList);
 			}
+			dp.setTemp("Fetched All Movies");
 			return new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
 		}
 		
@@ -76,7 +78,8 @@ public class MovieController {
 	//("hasRole('Admin')")
 	public ResponseEntity<?> deleteMovie(@PathVariable int mid) throws MovieIdNotPresentException{
 		
-		if( movieService.deleteMovie(mid)) {
+		if(  ticketService.deleteTicket(mid) &&  movieService.deleteMovie(mid)) {
+			dp.setTemp(mid+" Movie & Tickets deleted");
 			return new ResponseEntity<String>(mid+" Movie & Tickets Deleted", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(mid+" Movie is not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,6 +90,7 @@ public class MovieController {
 	public ResponseEntity<?> updateMovie(@RequestBody Movie movie) throws MovieIdNotPresentException{
 		
 		if(movieService.updateMovie(movie)) {
+			dp.setTemp(movie.getMovieName()+" Updated Successfully");
 			return new ResponseEntity<String>(movie.getMovieName()+" Movie Updated", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(movie.getMovieName()+" Movie is not updated", HttpStatus.INTERNAL_SERVER_ERROR);

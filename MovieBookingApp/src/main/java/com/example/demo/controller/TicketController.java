@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.exceptions.MovieIdNotPresentException;
 import com.example.demo.model.Movie;
 import com.example.demo.model.Ticket;
+import com.example.demo.service.DataPublisherServiceImpl;
 import com.example.demo.service.MovieService;
 import com.example.demo.service.TicketService;
 
@@ -25,6 +26,9 @@ public class TicketController {
 	
 	@Autowired
 	private MovieService movieService;
+	
+	@Autowired
+	DataPublisherServiceImpl dp;
 	
 	@PostMapping("/bookTicket/{mid}")
 	//@PreAuthorize("hasRole('User')")
@@ -43,6 +47,7 @@ public class TicketController {
 		
 		if(movieService.updateMovie(mov) && ticketService.bookTicket(ticket)) {
 			
+			dp.setTemp(ticket.getBookedSeats()+" Tickets Successfully booked for "+mov.getMovieName());
 			return new ResponseEntity<Ticket>(ticket, HttpStatus.CREATED);
 		}
 		}

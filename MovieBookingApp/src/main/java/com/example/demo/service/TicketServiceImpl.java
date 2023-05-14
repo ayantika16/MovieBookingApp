@@ -47,13 +47,13 @@ public class TicketServiceImpl implements TicketService{
 	}
 
 	@Override
-	public boolean deleteTicket(int movieId) throws MovieIdNotPresentException {
+	public boolean deleteTicket(int movieId) {
 		
-		Optional<Movie> movObj=movieRepository.findById(movieId);
-		
-		if(!movObj.isPresent()) {
-			throw new MovieIdNotPresentException();
-		}
+//		Optional<Movie> movObj=movieRepository.findById(movieId);
+//		
+//		if(!movObj.isPresent()) {
+//			throw new MovieIdNotPresentException();
+//		}
 		
 		ticketRepository.deleteTicketData(movieId);
 		return true;
